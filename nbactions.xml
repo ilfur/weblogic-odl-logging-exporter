@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-format and package</actionName>
+            <displayName>format and package</displayName>
+            <goals>
+                <goal>com.coveo:fmt-maven-plugin:format</goal>
+                <goal>package</goal>
+            </goals>
+        </action>
+    </actions>

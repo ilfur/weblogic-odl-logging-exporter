@@ -1,0 +1,14 @@
+# Copyright 2019, Oracle Corporation and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+
+# Test config file
+
+publishHost: host1
+publishPort: 1234
+weblogicLoggingExporterFilters:
+- FilterExpression:  MSGID != 'BEA-000449'
+weblogicLoggingExporterEnabled: false
+weblogicLoggingExporterSeverity: Warning
+weblogicLoggingExporterBulkSize: 2
+weblogicLoggingIndexName: index1
+domainUID: domain1
