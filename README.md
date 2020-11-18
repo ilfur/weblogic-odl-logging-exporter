@@ -6,7 +6,7 @@ Current Version 1.1.20 has:
 
 * Support for ODL-based logging when using ADF, SOA Suite, Service Bus or other components that require JRF.
 For that purpose, the Config file (WebLogicLoggingExporter.yaml) now accepts a logger name for the loggers You want messages to be sent to ElasticSearch:
-loggerName: oracle.osb
+```loggerName: oracle.osb```
 (could also be oracle , oracle.osb.logging, oracle ... please see the Oracle Fusion Middleware docs for a list)
 
 * If ElasticSearch is not available, sending logs does no longer throw an exception, so Service Bus Pipelines will continue to work normally. A simple log entry of the failure is created instead.
@@ -15,7 +15,7 @@ loggerName: oracle.osb
 
 * custom Fields possible (similar to Kibana Scripted Fields, but indexable), just specify a "trc_" prefix for the custom field plus a RegEx to filter data from the log
 * some pre-existing custom fields are implemented in Java, not Regex, for way better performance. Just enable Tracing in OSB for Your services and add the following fields to the WebLogicLoggingExporter.yaml:
-...
+```
 trc_OSBService: ".*Service Ref = (.*?)\\n"
 trc_CorrelationID: ".*<jms:JMSCorrelationID>(.*)<\\/jms:JMSCorrelationID>"
 trc_MessagePayload: ".*Payload = (.*?)$"
@@ -23,7 +23,7 @@ trc_MessageType: ".*<jms:JMSType>(.*)<\\/jms:JMSType>"
 trc_FileName: ".*<file:file....>(.*)<\\/file:file....>"
 trc_IsReDelivered: ".*<jms:JMSRedelivered>(.*)<\\/jms:JMSRedelivered>"
 trc_ReDeliveredCounter: ".*<jms:JMSXDeliveryCount>(.*)<\\/jms:JMSXDeliveryCount>"
-...
+```
 Their Regexes will be ignored since accordingly named Java Methods exist in the Log Exporter that are about 1000 times faster than regexes.
 
 * In case a custom Index is created in ElasticSearch, the LogExporter should not send its standard Mapping to ElasticSearch on startup.
