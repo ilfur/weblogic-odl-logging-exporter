@@ -1,16 +1,35 @@
 # WebLogic ODL Logging Exporter
-This clone is based on the Weblogic Logging Exporter on github.
-It adds support for ODL-based logging when using ADF, SOA Suite, Service Bus or other components that require JRF.
-The Config file now accepts a logger name Parameter for the loggers You want to have messages sent to ElasticSearch:
+This Exporter is based on the official Oracle Weblogic Logging Exporter on github.
+This Log Exporter for ElasticSearch adds some features and problem fixes over the original one.
+
+Current Version 1.1.20 has:
+
+* Support for ODL-based logging when using ADF, SOA Suite, Service Bus or other components that require JRF.
+For that purpose, the Config file (WebLogicLoggingExporter.yaml) now accepts a logger name for the loggers You want messages to be sent to ElasticSearch:
 loggerName: oracle.osb
-(could also be oracle , oracle.osb.logging, oracle ... please see the docs for a list)
+(could also be oracle , oracle.osb.logging, oracle ... please see the Oracle Fusion Middleware docs for a list)
 
-Missing features:
-* support for OSB trace messages, must be some kind of supplement, will find that out
-  OSB log messages do work though.
-* Instead of a startup class, use a Handler to be put into logging.xml of SOA Suite
+* If ElasticSearch is not available, sending logs does no longer throw an exception, so Service Bus Pipelines will continue to work normally. A simple log entry of the failure is created instead.
 
-Here's the original text and howto from the WebLogic Exporter:
+* Special characters like \t, \n, \ are now masked correctly, would be rejected by ElasticSearch because of invalid JSON format
+
+* custom Fields possible (similar to Kibana Scripted Fields, but indexable), just specify a "trc_" prefix for the custom field plus a RegEx to filter data from the log
+* some pre-existing custom fields are implemented in Java, not Regex, for way better performance. Just enable Tracing in OSB for Your services and add the following fields to the WebLogicLoggingExporter.yaml:
+trc_OSBService: ".*Service Ref = (.*?)\\n"
+trc_CorrelationID: ".*<jms:JMSCorrelationID>(.*)<\\/jms:JMSCorrelationID>"
+trc_MessagePayload: ".*Payload = (.*?)$"
+trc_MessageType: ".*<jms:JMSType>(.*)<\\/jms:JMSType>"
+trc_FileName: ".*<file:file....>(.*)<\\/file:file....>"
+trc_IsReDelivered: ".*<jms:JMSRedelivered>(.*)<\\/jms:JMSRedelivered>"
+trc_ReDeliveredCounter: ".*<jms:JMSXDeliveryCount>(.*)<\\/jms:JMSXDeliveryCount>"
+Their Regexes will be ignored since accordingly named Java Methods exist in the Log Exporter that are about 1000 times faster than regexes.
+
+* In case a custom Index is created in ElasticSearch, the LogExporter should not send its standard Mapping to ElasticSearch on startup.
+Added parameter "createMapping: false" for that purpose.
+
+
+
+Here's the original text and install-howto from the original WebLogic Exporter:
 
 # WebLogic Logging Exporter
 
