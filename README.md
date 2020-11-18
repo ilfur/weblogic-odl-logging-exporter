@@ -27,7 +27,7 @@ trc_ReDeliveredCounter: ".*<jms:JMSXDeliveryCount>(.*)<\\/jms:JMSXDeliveryCount>
 Their Regexes will be ignored since accordingly named Java Methods exist in the Log Exporter that are about 1000 times faster than regexes.
 
 * In case a custom Index is created in ElasticSearch, the LogExporter should not send its standard Mapping to ElasticSearch on startup.
-Added parameter "createMapping: false" for that purpose.
+Added parameter ```createMapping: false``` for that purpose.
 
 
 
